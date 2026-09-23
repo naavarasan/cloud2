@@ -1,0 +1,15 @@
+---
+- name: Configure Meme Generator Assets Directory
+  hosts: local
+  gather_facts: false
+  tasks:
+    - name: Ensure app/assets directory exists with appropriate permissions
+      ansible.builtin.file:
+        path: "../app/assets"
+        state: directory
+        mode: '0755' # rwxr-xr-x (executable for directory traversal)
+        
+    - name: Ensure static assets are readable by web server
+      ansible.builtin.command:
+        cmd: "chmod 644 ../app/assets/*"
+      ignore_errors: true # In case the directory is empty or contains no files yet

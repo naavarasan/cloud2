@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Meme Generator</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Meme Generator</h1>
+        
+        <div class="main-content">
+            <div class="controls">
+                <div class="input-group">
+                    <label for="top-text">Top Text</label>
+                    <input type="text" id="top-text" placeholder="Enter top text...">
+                </div>
+                
+                <div class="input-group">
+                    <label for="bottom-text">Bottom Text</label>
+                    <input type="text" id="bottom-text" placeholder="Enter bottom text...">
+                </div>
+
+                <div class="image-selection">
+                    <label>Select Meme Image:</label>
+                    <div class="thumbnails">
+                        <img src="assets/meme1.jpg" alt="Meme 1" class="thumbnail selected" data-src="assets/meme1.jpg">
+                        <img src="assets/meme2.jpg" alt="Meme 2" class="thumbnail" data-src="assets/meme2.jpg">
+                        <img src="assets/meme3.jpg" alt="Meme 3" class="thumbnail" data-src="assets/meme3.jpg">
+                    </div>
+                </div>
+
+                <div class="buttons">
+                    <button id="generate-btn">Generate Meme</button>
+                    <button id="clear-btn" class="secondary">Clear</button>
+                    <button id="download-btn" class="success">Download</button>
+                </div>
+            </div>
+
+            <div class="preview-area">
+                <canvas id="meme-canvas"></canvas>
+            </div>
+        </div>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html>

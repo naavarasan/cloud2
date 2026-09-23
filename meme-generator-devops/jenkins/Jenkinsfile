@@ -1,0 +1,56 @@
+pipeline {
+    agent any
+
+    stages {
+        stage('Checkout') {
+            steps {
+                // In a real scenario, this would be: git 'https://github.com/repo.git'
+                // For a local project without Git, we assume files are in the workspace
+                echo 'Checking out the Meme Generator code...'
+                checkout scm
+            }
+        }
+
+        stage('Build Docker Image') {
+            steps {
+                // Build the Docker image from the root directory using the Dockerfile in docker/
+                echo 'Building the Docker image meme-generator:latest locally...'
+                
+                // For Windows nodes we use bat, for Linux we use sh.
+                script {
+                    if (isUnix()) {
+                        sh 'docker build -f docker/Dockerfile -t meme-generator:latest .'
+                    } else {
+                        bat 'docker build -f docker/Dockerfile -t meme-generator:latest .'
+                    }
+                }
+            }
+        }
+
+        stage('Run Docker Container') {
+            steps {
+                echo 'Running the meme-generator container...'
+                script {
+                    if (isUnix()) {
+                        // Stop and remove existing container if it exists
+                        sh 'docker rm -f meme-generator || true'
+                        // Run the new container
+                        sh 'docker run -d -p 8080:80 --name meme-generator meme-generator:latest'
+                    } else {
+                        bat 'docker rm -f meme-generator || exit 0'
+                        bat 'docker run -d -p 8080:80 --name meme-generator meme-generator:latest'
+                    }
+                }
+            }
+        }
+    }
+    
+    post {
+        success {
+            echo 'Meme Generator successfully built and deployed locally!'
+        }
+        failure {
+            echo 'Pipeline failed. Please check the logs.'
+        }
+    }
+}
